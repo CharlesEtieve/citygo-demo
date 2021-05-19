@@ -1,4 +1,4 @@
-package com.eurosportdemo.app.newdi
+package com.eurosportdemo.app.di
 
 import android.content.Context
 import androidx.room.Room

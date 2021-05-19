@@ -1,4 +1,4 @@
-package com.eurosportdemo.app.newdi
+package com.eurosportdemo.app.di
 
 import com.eurosportdemo.app.BuildConfig
 import com.eurosportdemo.app.data.api.Webservice
