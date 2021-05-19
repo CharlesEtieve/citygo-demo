@@ -1,0 +1,17 @@
+<resources>
+    <string name="empty_book_error">No books available</string>
+    <string name="network_error">Fail to reach server</string>
+    <string name="unknown_error">Unknown error occurred</string>
+    <string name="no_data_book_list">No books available</string>
+
+    <!-- Basket Fragment -->
+    <string name="buy_button">Buy</string>
+    <string name="price_label">Original Price: %s\nOffer Price: %s</string>
+
+    <!-- Store Fragment -->
+    <string name="remove_button">Remove</string>
+
+    <!-- Main activity -->
+    <string name="tab_layout_title_store">Store</string>
+    <string name="tab_layout_title_basket">Basket</string>
+</resources>
