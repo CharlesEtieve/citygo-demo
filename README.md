@@ -1,2 +1,1 @@
-# eurosport-demo
 # citygo-demo
