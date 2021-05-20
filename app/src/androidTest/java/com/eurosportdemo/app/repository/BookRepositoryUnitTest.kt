@@ -67,7 +67,7 @@ class BookRepositoryUnitTest {
     @Test
     @Throws(InterruptedException::class)
     fun check_all_books_with_no_cache() {
-        val subscriber = bookRepository.bookListAvailable.subscribeOn(Schedulers.io()).test()
+        val subscriber = bookRepository.bookListAvailable.test()
         Awaitility.await().timeout(30, TimeUnit.SECONDS).until { subscriber.values().size == 1 }
         assertEquals(subscriber.values().first(), ArrayList<Book>())
         bookRepository.load(disposable)
@@ -78,7 +78,7 @@ class BookRepositoryUnitTest {
     @Test
     fun check_all_books_with_cache() {
         bookDao.insertBookList(buildListBookDatabase())
-        val subscriber = bookRepository.bookListAvailable.subscribeOn(Schedulers.io()).test()
+        val subscriber = bookRepository.bookListAvailable.test()
         Awaitility.await().timeout(30, TimeUnit.SECONDS).until { subscriber.values().size == 1 }
         assertEquals(subscriber.values().first(), buildListBookDatabase())
         bookRepository.load(disposable)

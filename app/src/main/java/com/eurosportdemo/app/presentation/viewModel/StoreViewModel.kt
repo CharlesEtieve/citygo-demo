@@ -45,8 +45,10 @@ class StoreViewModel @Inject constructor(
     }
 
     fun load() {
-        getBookUseCase.load(disposable)
-        setBasketUseCase.load(disposable)
+        Schedulers.io().scheduleDirect {
+            getBookUseCase.load(disposable)
+            setBasketUseCase.load(disposable)
+        }
     }
 
     //TODO refactor using lastElement()

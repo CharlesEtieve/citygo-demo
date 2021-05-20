@@ -1,7 +1,6 @@
 package com.eurosportdemo.app.presentation.viewModel
 
 import androidx.annotation.StringRes
-import androidx.annotation.VisibleForTesting
 import com.eurosportdemo.app.domain.model.Book
 import com.eurosportdemo.app.domain.model.Offer
 import com.eurosportdemo.app.domain.useCase.GetBasketUseCase
@@ -87,9 +86,11 @@ class BasketViewModel @Inject constructor(
     }
 
     fun load() {
-        getBasketUseCase.load(disposable)
-        removeBasketUseCase.load(disposable)
-        getOfferUseCase.load(disposable)
+        Schedulers.io().scheduleDirect {
+            getBasketUseCase.load(disposable)
+            removeBasketUseCase.load(disposable)
+            getOfferUseCase.load(disposable)
+        }
     }
 
     private fun getBestOfferPrice(bookList: List<Book>, offerList: List<Offer>): Double {

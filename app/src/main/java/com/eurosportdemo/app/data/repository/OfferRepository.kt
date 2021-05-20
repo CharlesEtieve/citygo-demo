@@ -4,10 +4,8 @@ import android.text.TextUtils
 import com.eurosportdemo.app.data.api.Webservice
 import com.eurosportdemo.app.data.database.dao.BookDao
 import com.eurosportdemo.app.domain.model.Offer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
@@ -28,7 +26,6 @@ class OfferRepository @Inject constructor(
             .flatMap { isbnListPath ->
                 webservice
                     .getOffers(isbnListPath)
-                    .subscribeOn(Schedulers.io())
             }
             .subscribe { response ->
                 if (response.isSuccessful) {
@@ -36,9 +33,7 @@ class OfferRepository @Inject constructor(
                         offerList.onNext(it)
                     }
                 } else {
-                    AndroidSchedulers.mainThread().scheduleDirect {
-                        error.onNext(RepositoryErrorEvent.UNKNOWN)
-                    }
+                    error.onNext(RepositoryErrorEvent.UNKNOWN)
                 }
             }.addTo(disposable)
     }
