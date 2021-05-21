@@ -43,21 +43,27 @@ class BasketFragment: BaseFragment(), ListAdapterListener {
             when(state) {
                 is BasketViewModel.ViewState.ShowBookList -> {
                     adapter.updateData(state.bookList)
-                    binding.bookRecyclerView.visibility = View.VISIBLE
-                    binding.offerLabel.visibility = View.VISIBLE
-                    binding.noDataLabel.visibility = View.GONE
-                    binding.offerLabel.text = getString(R.string.price_label, state.originalPrice, state.offerPrice)
+                    binding.apply {
+                        bookRecyclerView.visibility = View.VISIBLE
+                        offerLabel.visibility = View.VISIBLE
+                        noDataLabel.visibility = View.GONE
+                        offerLabel.text = getString(R.string.price_label, state.originalPrice, state.offerPrice)
+                    }
                 }
                 is BasketViewModel.ViewState.ShowErrorMessage -> {
-                    binding.bookRecyclerView.visibility = View.GONE
-                    binding.offerLabel.visibility = View.GONE
-                    binding.noDataLabel.visibility = View.VISIBLE
+                    binding.apply {
+                        bookRecyclerView.visibility = View.GONE
+                        offerLabel.visibility = View.GONE
+                        noDataLabel.visibility = View.VISIBLE
+                    }
                     Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
                 }
                 is BasketViewModel.ViewState.ShowNoData -> {
-                    binding.bookRecyclerView.visibility = View.GONE
-                    binding.offerLabel.visibility = View.GONE
-                    binding.noDataLabel.visibility = View.VISIBLE
+                    binding.apply {
+                        bookRecyclerView.visibility = View.GONE
+                        offerLabel.visibility = View.GONE
+                        noDataLabel.visibility = View.VISIBLE
+                    }
                 }
             }
         }.addTo(bag)
