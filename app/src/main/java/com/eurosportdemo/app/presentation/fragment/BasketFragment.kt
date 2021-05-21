@@ -64,6 +64,6 @@ class BasketFragment: BaseFragment(), ListAdapterListener {
     }
 
     override fun onItemClick(position: Int) {
-        viewModel.itemClicked(position)
+        viewModel.itemClicked.onNext(position)
     }
 }

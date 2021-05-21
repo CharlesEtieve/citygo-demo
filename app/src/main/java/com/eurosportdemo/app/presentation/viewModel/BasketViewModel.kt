@@ -15,6 +15,7 @@ import java.text.NumberFormat
 import java.util.*
 import com.eurosportdemo.app.domain.model.Offer.OfferType
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +36,8 @@ class BasketViewModel @Inject constructor(
     }
 
     val viewState: BehaviorSubject<ViewState> = BehaviorSubject.create()
+
+    var itemClicked: PublishSubject<Int> = PublishSubject.create()
 
     init {
         Observable
@@ -62,8 +65,7 @@ class BasketViewModel @Inject constructor(
                 )
             }
             .subscribe {
-                bookList = it.first
-                if (bookList?.isEmpty() == true) {
+                if (it.first.isEmpty()) {
                     viewState.onNext(ViewState.ShowNoData)
                 } else {
                     viewState.onNext(
@@ -75,6 +77,18 @@ class BasketViewModel @Inject constructor(
                     )
                 }
             }.addTo(disposable)
+
+        itemClicked
+            .withLatestFrom(getBasketUseCase.bookListInBasket.toObservable(), { itemClicked, bookListInBasket ->
+                Pair(itemClicked, bookListInBasket)
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                val book = it.second[it.first]
+                removeBasketUseCase.removeBookInBasket(book)
+            }.addTo(disposable)
+
         getBasketUseCase
             .error
             .subscribeOn(Schedulers.io())
@@ -114,16 +128,5 @@ class BasketViewModel @Inject constructor(
 
     private fun getOriginalPrice(bookList: List<Book>): Double {
         return bookList.map { book -> book.price }.sum()
-    }
-
-    //TODO refactor using lastElement()
-    private var bookList: List<Book>? = null
-    fun itemClicked(position: Int) {
-        bookList?.let {
-            val book = it[position]
-            Schedulers.io().scheduleDirect {
-                removeBasketUseCase.removeBookInBasket(book)
-            }
-        }
     }
 }

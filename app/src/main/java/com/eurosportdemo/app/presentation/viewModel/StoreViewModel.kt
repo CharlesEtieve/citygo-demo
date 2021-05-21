@@ -9,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,15 +26,28 @@ class StoreViewModel @Inject constructor(
 
     val viewState: BehaviorSubject<ViewState> = BehaviorSubject.create()
 
+    var itemClicked: PublishSubject<Int> = PublishSubject.create()
+
     init {
         getBookUseCase
             .bookListAvailable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                bookList = it
                 viewState.onNext(ViewState.ShowBookList(it))
             }.addTo(disposable)
+
+        itemClicked
+            .withLatestFrom(getBookUseCase.bookListAvailable.toObservable(), { itemClicked, bookListAvailable ->
+                Pair(itemClicked, bookListAvailable)
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                val book = it.second[it.first]
+                setBasketUseCase.setBookInBasket(book)
+            }.addTo(disposable)
+
         getBookUseCase
             .error
             .subscribeOn(Schedulers.io())
@@ -48,17 +62,6 @@ class StoreViewModel @Inject constructor(
         Schedulers.io().scheduleDirect {
             getBookUseCase.load(disposable)
             setBasketUseCase.load(disposable)
-        }
-    }
-
-    //TODO refactor using lastElement()
-    private var bookList: List<Book>? = null
-    fun itemClicked(position: Int) {
-        bookList?.let {
-            val book = it[position]
-            Schedulers.io().scheduleDirect {
-                setBasketUseCase.setBookInBasket(book)
-            }
         }
     }
 }
