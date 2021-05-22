@@ -38,7 +38,7 @@ class StoreViewModel @Inject constructor(
             }.addTo(disposable)
 
         itemClicked
-            .withLatestFrom(getBookUseCase.bookListAvailable.toObservable(), { itemClicked, bookListAvailable ->
+            .withLatestFrom(getBookUseCase.bookListAvailable, { itemClicked, bookListAvailable ->
                 Pair(itemClicked, bookListAvailable)
             })
             .subscribeOn(Schedulers.io())
@@ -56,12 +56,5 @@ class StoreViewModel @Inject constructor(
                 viewState.onNext(ViewState.ShowErrorMessage(it.getErrorResource()))
             }.addTo(disposable)
         viewState.onNext(ViewState.ShowNoData)
-    }
-
-    fun load() {
-        Schedulers.io().scheduleDirect {
-            getBookUseCase.load(disposable)
-            setBasketUseCase.load(disposable)
-        }
     }
 }

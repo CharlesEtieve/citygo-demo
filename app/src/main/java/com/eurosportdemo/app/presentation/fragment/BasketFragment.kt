@@ -33,7 +33,6 @@ class BasketFragment: BaseFragment(), ListAdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.load()
         adapter = BookListAdapter(this, getString(R.string.remove_button))
         binding.bookRecyclerView.adapter = adapter
         viewModel

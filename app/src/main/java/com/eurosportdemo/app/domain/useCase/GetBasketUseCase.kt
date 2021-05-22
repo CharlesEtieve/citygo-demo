@@ -1,17 +1,14 @@
 package com.eurosportdemo.app.domain.useCase
 
 import com.eurosportdemo.app.data.repository.BookRepository
-import io.reactivex.disposables.CompositeDisposable
+import com.eurosportdemo.app.domain.model.Book
+import io.reactivex.Flowable
 import javax.inject.Inject
 
-class GetBasketUseCase @Inject constructor(private val bookRepository: BookRepository) {
+class GetBasketUseCase @Inject constructor(bookRepository: BookRepository) {
 
-    var bookListInBasket = bookRepository.bookListInBasket
+    val bookListInBasket: Flowable<List<Book>> = bookRepository.bookListInBasket
 
     var error = bookRepository.error
-
-    fun load(disposable: CompositeDisposable) {
-        bookRepository.load(disposable)
-    }
 
 }

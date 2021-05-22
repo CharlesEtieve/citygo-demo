@@ -3,37 +3,21 @@ package com.eurosportdemo.app.data.repository
 import com.eurosportdemo.app.data.api.Webservice
 import com.eurosportdemo.app.data.database.dao.BookDao
 import com.eurosportdemo.app.domain.model.Book
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import java.net.UnknownHostException
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 class BookRepository @Inject constructor(
-    private val webservice: Webservice,
+    webservice: Webservice,
     private val bookDao: BookDao
 ) : BaseRepository() {
 
-    val bookListAvailable = bookDao.getBookListAvailable()
+    val bookListAvailableLocal = bookDao.getBookListAvailable()
+    val bookListAvailableDistant = webservice.getAllBooks()
 
-    val bookListInBasket = bookDao.getBookListInBasket()
+    val bookListInBasket: Flowable<List<Book>> = bookDao.getBookListInBasket()
 
-    fun load(disposable: CompositeDisposable) {
-        webservice
-            .getAllBooks()
-            .subscribe({ response ->
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        bookDao.insertBookList(it)
-                    }
-                } else {
-                    error.onNext(RepositoryErrorEvent.UNKNOWN)
-                }
-            }, { throwable ->
-                when (throwable) {
-                    is UnknownHostException -> error.onNext(RepositoryErrorEvent.NETWORK)
-                    else -> error.onNext(RepositoryErrorEvent.UNKNOWN)
-                }
-            }).addTo(disposable)
+    fun insertBookList(bookList: List<Book>) {
+        bookDao.insertBookList(bookList)
     }
 
     fun setBookInBasket(book: Book) {

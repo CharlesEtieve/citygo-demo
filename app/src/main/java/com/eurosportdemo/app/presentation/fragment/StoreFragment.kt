@@ -12,7 +12,6 @@ import com.eurosportdemo.app.presentation.adapter.BookListAdapter
 import com.eurosportdemo.app.presentation.adapter.ListAdapterListener
 import com.eurosportdemo.app.presentation.viewModel.StoreViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 
 @AndroidEntryPoint
@@ -33,11 +32,11 @@ class StoreFragment : BaseFragment(), ListAdapterListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.load()
         adapter = BookListAdapter(this, getString(R.string.buy_button))
         binding.bookRecyclerView.adapter = adapter
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.load()
+            //TODO
+            //viewModel.load()
         }
         viewModel
             .viewState
