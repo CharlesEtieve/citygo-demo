@@ -1,4 +1,4 @@
-package com.eurosportdemo.app.data.repository
+package com.eurosportdemo.app.domain.repository
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleObserver

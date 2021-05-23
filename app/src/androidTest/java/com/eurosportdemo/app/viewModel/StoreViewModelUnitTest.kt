@@ -1,7 +1,7 @@
 package com.eurosportdemo.app.viewModel
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.eurosportdemo.app.data.repository.BookRepository
+import com.eurosportdemo.app.domain.repository.BookRepository
 import com.eurosportdemo.app.domain.model.Book
 import com.eurosportdemo.app.domain.useCase.GetBookUseCase
 import com.eurosportdemo.app.domain.useCase.SetBasketUseCase

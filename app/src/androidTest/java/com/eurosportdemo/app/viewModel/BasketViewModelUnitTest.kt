@@ -2,12 +2,11 @@ package com.eurosportdemo.app.viewModel
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.eurosportdemo.app.data.api.response.GetOffersResponse
-import com.eurosportdemo.app.data.repository.BookRepository
-import com.eurosportdemo.app.data.repository.OfferRepository
+import com.eurosportdemo.app.domain.repository.BookRepository
+import com.eurosportdemo.app.domain.repository.OfferRepository
 import com.eurosportdemo.app.domain.model.Book
 import com.eurosportdemo.app.domain.model.Offer
 import com.eurosportdemo.app.domain.useCase.GetBasketUseCase
-import com.eurosportdemo.app.domain.useCase.GetOfferUseCase
 import com.eurosportdemo.app.domain.useCase.RemoveBasketUseCase
 import com.eurosportdemo.app.presentation.viewModel.BasketViewModel
 import io.mockk.every
@@ -53,7 +52,7 @@ class BasketViewModelUnitTest {
         every { bookRepository.bookListInBasket } returns Flowable.just(buildListBasketBook())
         basketViewModel = BasketViewModel(getBasketUseCase= GetBasketUseCase(bookRepository),
             removeBasketUseCase= RemoveBasketUseCase(bookRepository),
-            getOfferUseCase= GetOfferUseCase(offerRepository)
+            getOfferUseCase= GetBasketUseCase(offerRepository)
         )
         basketViewModel.load()
         val subscriber = basketViewModel.viewState.test()
@@ -72,7 +71,7 @@ class BasketViewModelUnitTest {
         every { bookRepository.bookListInBasket } returns Flowable.just(buildListBasketBook())
         basketViewModel = BasketViewModel(getBasketUseCase= GetBasketUseCase(bookRepository),
             removeBasketUseCase= RemoveBasketUseCase(bookRepository),
-            getOfferUseCase= GetOfferUseCase(offerRepository)
+            getOfferUseCase= GetBasketUseCase(offerRepository)
         )
         basketViewModel.load()
         val subscriber = basketViewModel.viewState.test()
@@ -91,7 +90,7 @@ class BasketViewModelUnitTest {
         every { bookRepository.bookListInBasket } returns Flowable.just(buildListBasketBook())
         basketViewModel = BasketViewModel(getBasketUseCase= GetBasketUseCase(bookRepository),
             removeBasketUseCase= RemoveBasketUseCase(bookRepository),
-            getOfferUseCase= GetOfferUseCase(offerRepository)
+            getOfferUseCase= GetBasketUseCase(offerRepository)
         )
         basketViewModel.load()
         val subscriber = basketViewModel.viewState.test()

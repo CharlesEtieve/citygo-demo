@@ -3,7 +3,6 @@ package com.eurosportdemo.app.presentation.viewModel
 import androidx.annotation.StringRes
 import com.eurosportdemo.app.domain.model.Book
 import com.eurosportdemo.app.domain.useCase.GetBasketUseCase
-import com.eurosportdemo.app.domain.useCase.GetOfferUseCase
 import com.eurosportdemo.app.domain.useCase.RemoveBasketUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,9 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BasketViewModel @Inject constructor(
-    getBasketUseCase: GetBasketUseCase,
-    private val removeBasketUseCase: RemoveBasketUseCase,
-    getOfferUseCase: GetOfferUseCase
+    removeBasketUseCase: RemoveBasketUseCase,
+    getBasketUseCase: GetBasketUseCase
 ) : BaseViewModel() {
     sealed class ViewState {
         class ShowBookList(
@@ -36,7 +34,7 @@ class BasketViewModel @Inject constructor(
 
     init {
 
-        getOfferUseCase
+        getBasketUseCase
             .basket
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -56,15 +54,14 @@ class BasketViewModel @Inject constructor(
 
         itemClicked
             .withLatestFrom(getBasketUseCase
-                .bookListInBasket.subscribeOn(Schedulers.io())
-                .filter { it.isNotEmpty() }
-                .toObservable(), { itemClicked, bookListInBasket ->
-                Pair(itemClicked, bookListInBasket)
+                .basket.subscribeOn(Schedulers.io())
+                .filter { it.bookList.isNotEmpty() }
+                , { itemClicked, basket ->
+                    basket.bookList[itemClicked]
             })
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
-            .subscribe {
-                val book = it.second[it.first]
+            .subscribe { book ->
                 removeBasketUseCase.removeBookInBasket(book)
             }.addTo(disposable)
 

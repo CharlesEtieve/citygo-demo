@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.eurosportdemo.app.data.api.Webservice
 import com.eurosportdemo.app.data.database.MyDatabase
 import com.eurosportdemo.app.data.database.dao.BookDao
-import com.eurosportdemo.app.data.repository.BookRepository
+import com.eurosportdemo.app.domain.repository.BookRepository
 import com.eurosportdemo.app.domain.model.Book
 import io.mockk.every
 import io.mockk.mockk

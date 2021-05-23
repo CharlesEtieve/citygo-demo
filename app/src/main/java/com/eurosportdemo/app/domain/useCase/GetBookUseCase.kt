@@ -1,7 +1,7 @@
 package com.eurosportdemo.app.domain.useCase
 
-import com.eurosportdemo.app.data.repository.BaseRepository
-import com.eurosportdemo.app.data.repository.BookRepository
+import com.eurosportdemo.app.domain.repository.BaseRepository
+import com.eurosportdemo.app.domain.repository.BookRepository
 import com.eurosportdemo.app.domain.model.Book
 import io.reactivex.Observable
 import javax.inject.Inject

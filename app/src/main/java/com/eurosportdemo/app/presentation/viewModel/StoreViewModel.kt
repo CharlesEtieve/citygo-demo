@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoreViewModel @Inject constructor(
-    private val getBookUseCase: GetBookUseCase,
-    private val setBasketUseCase: SetBasketUseCase
+    getBookUseCase: GetBookUseCase,
+    setBasketUseCase: SetBasketUseCase
 ) : BaseViewModel() {
 
     sealed class ViewState {

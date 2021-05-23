@@ -1,4 +1,4 @@
-package com.eurosportdemo.app.data.repository
+package com.eurosportdemo.app.domain.repository
 
 import com.eurosportdemo.app.data.api.Webservice
 import com.eurosportdemo.app.data.database.dao.BookDao
