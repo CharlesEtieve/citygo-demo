@@ -6,7 +6,7 @@ import com.eurosportdemo.app.domain.model.Book
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class GetBookUseCase @Inject constructor(private val bookRepository: BookRepository) {
+class GetAvailableBookListUseCase @Inject constructor(private val bookRepository: BookRepository) {
 
     val bookListAvailable: Observable<List<Book>> = Observable.merge(
         bookRepository

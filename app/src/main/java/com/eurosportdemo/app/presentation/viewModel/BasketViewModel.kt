@@ -3,7 +3,7 @@ package com.eurosportdemo.app.presentation.viewModel
 import androidx.annotation.StringRes
 import com.eurosportdemo.app.domain.model.Book
 import com.eurosportdemo.app.domain.useCase.GetBasketUseCase
-import com.eurosportdemo.app.domain.useCase.RemoveBasketUseCase
+import com.eurosportdemo.app.domain.useCase.RemoveBookInBasketUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BasketViewModel @Inject constructor(
-    removeBasketUseCase: RemoveBasketUseCase,
+    removeBookInBasketUseCase: RemoveBookInBasketUseCase,
     getBasketUseCase: GetBasketUseCase
 ) : BaseViewModel() {
     sealed class ViewState {
@@ -62,7 +62,7 @@ class BasketViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe { book ->
-                removeBasketUseCase.removeBookInBasket(book)
+                removeBookInBasketUseCase.removeBookInBasket(book)
             }.addTo(disposable)
 
         getBasketUseCase

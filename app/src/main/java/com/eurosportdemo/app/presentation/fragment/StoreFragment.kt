@@ -51,7 +51,7 @@ class StoreFragment : BaseFragment(), ListAdapterListener {
                         binding.swipeRefreshLayout.isRefreshing = false
                     }
                 }
-            }.addTo(bag)
+            }.addTo(disposable)
     }
 
     override fun onItemClick(position: Int) {

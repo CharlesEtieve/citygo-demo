@@ -5,10 +5,10 @@ import io.reactivex.disposables.CompositeDisposable
 
 open class BaseFragment: Fragment() {
 
-    protected val bag = CompositeDisposable()
+    protected val disposable = CompositeDisposable()
 
     override fun onDestroy() {
         super.onDestroy()
-        bag.clear()
+        disposable.clear()
     }
 }

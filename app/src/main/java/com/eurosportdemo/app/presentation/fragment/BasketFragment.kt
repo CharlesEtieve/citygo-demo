@@ -65,7 +65,7 @@ class BasketFragment: BaseFragment(), ListAdapterListener {
                     }
                 }
             }
-        }.addTo(bag)
+        }.addTo(disposable)
     }
 
     override fun onItemClick(position: Int) {

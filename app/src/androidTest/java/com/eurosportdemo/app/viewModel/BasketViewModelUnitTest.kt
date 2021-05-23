@@ -7,7 +7,7 @@ import com.eurosportdemo.app.domain.repository.OfferRepository
 import com.eurosportdemo.app.domain.model.Book
 import com.eurosportdemo.app.domain.model.Offer
 import com.eurosportdemo.app.domain.useCase.GetBasketUseCase
-import com.eurosportdemo.app.domain.useCase.RemoveBasketUseCase
+import com.eurosportdemo.app.domain.useCase.RemoveBookInBasketUseCase
 import com.eurosportdemo.app.presentation.viewModel.BasketViewModel
 import io.mockk.every
 import io.mockk.mockk
@@ -51,7 +51,7 @@ class BasketViewModelUnitTest {
         every { offerRepository.offerList } returns BehaviorSubject.createDefault(buildListOffer("mockOfferPercentage.json"))
         every { bookRepository.bookListInBasket } returns Flowable.just(buildListBasketBook())
         basketViewModel = BasketViewModel(getBasketUseCase= GetBasketUseCase(bookRepository),
-            removeBasketUseCase= RemoveBasketUseCase(bookRepository),
+            removeBookInBasketUseCase= RemoveBookInBasketUseCase(bookRepository),
             getOfferUseCase= GetBasketUseCase(offerRepository)
         )
         basketViewModel.load()
@@ -70,7 +70,7 @@ class BasketViewModelUnitTest {
         every { offerRepository.offerList } returns BehaviorSubject.createDefault(buildListOffer("mockOfferMinus.json"))
         every { bookRepository.bookListInBasket } returns Flowable.just(buildListBasketBook())
         basketViewModel = BasketViewModel(getBasketUseCase= GetBasketUseCase(bookRepository),
-            removeBasketUseCase= RemoveBasketUseCase(bookRepository),
+            removeBookInBasketUseCase= RemoveBookInBasketUseCase(bookRepository),
             getOfferUseCase= GetBasketUseCase(offerRepository)
         )
         basketViewModel.load()
@@ -89,7 +89,7 @@ class BasketViewModelUnitTest {
         every { offerRepository.offerList } returns BehaviorSubject.createDefault(buildListOffer("mockOfferSlice.json"))
         every { bookRepository.bookListInBasket } returns Flowable.just(buildListBasketBook())
         basketViewModel = BasketViewModel(getBasketUseCase= GetBasketUseCase(bookRepository),
-            removeBasketUseCase= RemoveBasketUseCase(bookRepository),
+            removeBookInBasketUseCase= RemoveBookInBasketUseCase(bookRepository),
             getOfferUseCase= GetBasketUseCase(offerRepository)
         )
         basketViewModel.load()

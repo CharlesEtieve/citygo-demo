@@ -28,19 +28,23 @@ class GetBasketUseCase @Inject constructor(
                 Basket(bookList, isbnListPath, ArrayList(), 0.0, 0.0, "", "")
             }
             .flatMap { basket ->
-                webservice
-                    .getOffers(basket.isbnListPath)
-                    .map { response ->
-                        var offerList: List<Offer> = ArrayList()
-                        if (response.isSuccessful) {
-                            response.body()?.offerList?.let {
-                                offerList = it
+                if(basket.bookList.isNotEmpty()) {
+                    webservice
+                        .getOffers(basket.isbnListPath)
+                        .map { response ->
+                            var offerList: List<Offer> = ArrayList()
+                            if (response.isSuccessful) {
+                                response.body()?.offerList?.let {
+                                    offerList = it
+                                }
+                            } else {
+                                error.onNext(BaseRepository.RepositoryErrorEvent.UNKNOWN)
                             }
-                        } else {
-                            error.onNext(BaseRepository.RepositoryErrorEvent.UNKNOWN)
+                            basket.copy(offerList = offerList)
                         }
-                        basket.copy(offerList = offerList)
-                    }
+                } else {
+                    Observable.just(basket)
+                }
             }
             .map { basket ->
                 //calculate original and best offer prices

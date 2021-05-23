@@ -2,8 +2,8 @@ package com.eurosportdemo.app.presentation.viewModel
 
 import androidx.annotation.StringRes
 import com.eurosportdemo.app.domain.model.Book
-import com.eurosportdemo.app.domain.useCase.GetBookUseCase
-import com.eurosportdemo.app.domain.useCase.SetBasketUseCase
+import com.eurosportdemo.app.domain.useCase.GetAvailableBookListUseCase
+import com.eurosportdemo.app.domain.useCase.SetBookInBasketUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoreViewModel @Inject constructor(
-    getBookUseCase: GetBookUseCase,
-    setBasketUseCase: SetBasketUseCase
+    getAvailableBookListUseCase: GetAvailableBookListUseCase,
+    setBookInBasketUseCase: SetBookInBasketUseCase
 ) : BaseViewModel() {
 
     sealed class ViewState {
@@ -29,7 +29,7 @@ class StoreViewModel @Inject constructor(
     var itemClicked: PublishSubject<Int> = PublishSubject.create()
 
     init {
-        getBookUseCase
+        getAvailableBookListUseCase
             .bookListAvailable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -38,17 +38,17 @@ class StoreViewModel @Inject constructor(
             }.addTo(disposable)
 
         itemClicked
-            .withLatestFrom(getBookUseCase.bookListAvailable, { itemClicked, bookListAvailable ->
+            .withLatestFrom(getAvailableBookListUseCase.bookListAvailable, { itemClicked, bookListAvailable ->
                 Pair(itemClicked, bookListAvailable)
             })
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe {
                 val book = it.second[it.first]
-                setBasketUseCase.setBookInBasket(book)
+                setBookInBasketUseCase.setBookInBasket(book)
             }.addTo(disposable)
 
-        getBookUseCase
+        getAvailableBookListUseCase
             .error
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

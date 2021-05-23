@@ -3,8 +3,8 @@ package com.eurosportdemo.app.viewModel
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.eurosportdemo.app.domain.repository.BookRepository
 import com.eurosportdemo.app.domain.model.Book
-import com.eurosportdemo.app.domain.useCase.GetBookUseCase
-import com.eurosportdemo.app.domain.useCase.SetBasketUseCase
+import com.eurosportdemo.app.domain.useCase.GetAvailableBookListUseCase
+import com.eurosportdemo.app.domain.useCase.SetBookInBasketUseCase
 import com.eurosportdemo.app.presentation.viewModel.StoreViewModel
 import io.mockk.every
 import io.mockk.mockk
@@ -34,8 +34,8 @@ class StoreViewModelUnitTest {
         every { bookRepository.bookListInBasket } returns Flowable.empty()
         every { bookRepository.bookListAvailable } returns Flowable.just(buildListBook())
         every { bookRepository.error } returns PublishSubject.create()
-        storeViewModel = StoreViewModel(getBookUseCase = GetBookUseCase(bookRepository),
-            setBasketUseCase = SetBasketUseCase(bookRepository))
+        storeViewModel = StoreViewModel(getAvailableBookListUseCase = GetAvailableBookListUseCase(bookRepository),
+            setBookInBasketUseCase = SetBookInBasketUseCase(bookRepository))
     }
 
     @After
